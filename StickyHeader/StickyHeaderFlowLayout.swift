@@ -89,20 +89,6 @@ class StickyHeaderFlowLayout: UICollectionViewFlowLayout
             let currentYOffset = collectionView!.contentOffset.y
             let numberOfRows = collectionView!.numberOfSections
             
-            //Header column
-            for row in 0...numberOfRows
-            {
-                let indexPath = IndexPath(item: 0, section: row)
-                if let attributes = cellAttributesDict[indexPath]
-                {
-                    //Update x-position to follow the user's scroll
-                    var frame = attributes.frame
-                    frame.origin.x = currentXOffset
-                    attributes.frame = frame
-                }
-            }
-            
-            ///TODO
             for row in 0...numberOfRows-1
             {
                 //Header row
