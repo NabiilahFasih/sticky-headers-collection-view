@@ -8,8 +8,10 @@
 
 import UIKit
 
-//NOTES: 
+// ****
+// NOTES:
 // indexpath.section corresponds to a row, indexpath.item corresponds to a column
+// ****
 
 class StickyHeaderFlowLayout: UICollectionViewFlowLayout
 {
@@ -88,14 +90,23 @@ class StickyHeaderFlowLayout: UICollectionViewFlowLayout
             let currentXOffset = collectionView!.contentOffset.x
             let currentYOffset = collectionView!.contentOffset.y
             let numberOfRows = collectionView!.numberOfSections
+            let numberOfColumns = collectionView!.numberOfItems(inSection: 0)
             
             for row in 0...numberOfRows-1
             {
+                //Header Column
+                let indexPath = IndexPath(item: 0, section: row)
+                if let attributes = cellAttributesDict[indexPath]
+                {
+                    //Update x-position to follow the user's scroll
+                    var frame = attributes.frame
+                    frame.origin.x = currentXOffset
+                    attributes.frame = frame
+                }
+                
                 //Header row
                 if row == 0
                 {
-                    let numberOfColumns = collectionView!.numberOfItems(inSection: row)
-                    
                     for column in 0...numberOfColumns-1
                     {
                         let indexPath = IndexPath(item: column, section: row)
@@ -104,27 +115,8 @@ class StickyHeaderFlowLayout: UICollectionViewFlowLayout
                             //Update y-position to follow the user's scroll
                             var frame = attributes.frame
                             frame.origin.y = currentYOffset
-                            
-                            //Also update x-position for top left corner cell
-                            if column == 0
-                            {
-                                frame.origin.x = currentXOffset
-                            }
-                            
                             attributes.frame = frame
                         }
-                    }
-                }
-                else
-                {
-                    //Header column
-                    let indexPath = IndexPath(item: 0, section: row)
-                    if let attributes = cellAttributesDict[indexPath]
-                    {
-                        //Update x-position to follow the user's scroll
-                        var frame = attributes.frame
-                        frame.origin.x = currentXOffset
-                        attributes.frame = frame
                     }
                 }
             }
